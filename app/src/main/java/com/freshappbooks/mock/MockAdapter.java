@@ -35,9 +35,12 @@ public class MockAdapter extends RecyclerView.Adapter<MockHolder> {
         return mockList.size();
     }
 
-    public void addData(List<Mock> mocks) {
-        mockList.addAll(mocks);
-        notifyDataSetChanged();
+    public void addData(List<Mock> mocks, boolean refresh) {
+        if (refresh) {
+            mockList.clear();
+        }
+            mockList.addAll(mocks);
+            notifyDataSetChanged();
     }
 }
 
