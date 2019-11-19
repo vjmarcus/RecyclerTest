@@ -19,4 +19,9 @@ public class MockHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.tv_name);
         value = itemView.findViewById(R.id.tv_value);
     }
+
+    public void bind(Mock mock) {
+        name.setText(mock.getName());
+        value.setText(mock.getValue());
+    }
 }
