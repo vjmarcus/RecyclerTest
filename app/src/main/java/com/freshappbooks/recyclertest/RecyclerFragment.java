@@ -1,6 +1,8 @@
 package com.freshappbooks.recyclertest;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,7 +23,7 @@ import com.freshappbooks.mock.MockGenerator;
 
 import java.util.Random;
 
-public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
@@ -81,6 +86,25 @@ public class RecyclerFragment extends Fragment implements SwipeRefreshLayout.OnR
         recyclerView.setVisibility(View.VISIBLE);
         errorView.setVisibility(View.GONE);
         adapter.addData(MockGenerator.generate(count), true);
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return new CursorLoader(getActivity(),
+                ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME}, null, null, ContactsContract.Contacts._ID
+        );
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 }
